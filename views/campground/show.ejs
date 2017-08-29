@@ -1,0 +1,39 @@
+<% include ../pratical/header %>
+
+<div class="container">  
+    <div class="col-sm-8 text-left"> 
+      <h1><%= campGround.name %></h1>
+      <div>
+        <img src="<%= campGround.image %>" class="img-rounded" alt="Cinque Terre" width=100% >
+      </div>
+      <div>
+        <p><%= campGround.description %></p>
+      </div>
+      
+      <!--display commment-->
+      <div>
+        <% campGround.commentList.forEach(function(comment){ %>
+          <% if (comment!==null){ %>
+            <p><strong><%= comment.author %></strong> - <%= comment.content %></p>
+          <% } %>
+        <% }) %>
+      </div>
+      
+      <!--adding comment form-->
+      <div>
+      	<form action="/index/<%= campGround._id %>/comment" method="POST" class="form-inline">
+          <div class="form-group">
+            <input type="text" class="form-control" name="comment[author]" placeholder="author">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" name="comment[content]" placeholder="content">    
+          </div>
+          <div>
+            <button type="submit" class="btn btn-default">comment</button>
+          </div>
+        </form>  
+      </div>
+    </div>
+</div>
+
+<% include ../pratical/footer %>

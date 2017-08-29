@@ -1,0 +1,21 @@
+<% include ../pratical/header %>
+<div class="container">
+        <div class="jumbotron">
+            <h1>welcome to Camp Ground!</h1>
+            <a class="btn btn-primary" href="/index/new">Make a new camp ground!</a>
+        </div>
+        
+        <div class="row" style="display: flex; flex-wrap: wrap;">
+            <% campGrounds.forEach(function(campGround){ %>
+              <div class="col-md-3 col-sm-6">
+                  <div class="thumbnail">
+                        <img src="<%=campGround.image%>">
+                        <div><h4 class="caption"><%=campGround.name%></h4></div>
+                        <p><a class = "btn btn-info" href="/index/<%= campGround._id %>">info</a></p>
+                  </div>
+              </div>  
+            <% }); %>
+        </div>
+       
+</div>
+<% include ../pratical/footer %>

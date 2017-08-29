@@ -1,0 +1,25 @@
+<% include ../pratical/header %>
+
+    <div class="container">
+        <div align = auto width = 30%>
+            <div style="text-align: center">
+                <h2>Fill out your new camp ground</h2>
+            </div>
+            <div style="width: 30%; margin: 0 auto">
+                    <form action="/index" method="POST">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="name" placeholder="name">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="image" placeholder="image url">    
+                        </div>
+                        <div class = "form-group">
+                            <textarea rows="10" class = "form-control" placeholder = "description" name = "description"></textarea>
+                        </div>
+                        <input class="btn btn-primary btn-block btn-lg form-group" type="submit">
+                    </form>
+            </div>
+        </div>
+    </div>
+
+<% include ../pratical/footer %>
