@@ -11,7 +11,9 @@ var express             = require("express"),
     
 // app configuration
 // app.use(express.static(__dirname + "/public"));
-mongoose.connect('mongodb://localhost/yelpcamp', {useMongoClient: true});
+//'mongodb://localhost/yelpcamp'
+var url = process.env.DATABASEURL;
+mongoose.connect(url, {useMongoClient: true});
 mongoose.Promise = global.Promise;
 app.use(session({
     secret: "vo chong Kim Dung",
