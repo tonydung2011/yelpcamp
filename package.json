@@ -4,7 +4,8 @@
   "description": "contain NPM list for this app",
   "main": "yelpcamp.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node yelpcamp.js"
   },
   "author": "tony dung",
   "license": "ISC",
