@@ -1,6 +1,7 @@
 var express    = require("express"),
     router     = express.Router(),
-    Campground = require("../model/campground");
+    Campground = require("../model/campground"),
+    Comment    = require("../model/comments");
 
 
 function isLoggedIn(req, res, next){
@@ -42,18 +43,15 @@ router.post("/index/", isLoggedIn, function (req, res){
 
 // access to page new camp ground
 router.get("/index/new", isLoggedIn ,function(req, res){
-    console.log("rending form");
     res.render("campground/new");
 });
 
 // access to a specific campground id page
 router.get("/index/:id", function(req, res){
-    console.log("ready to connect to campground");
-    Campground.findById(req.params.id, function(err, campGround){
+    Campground.findById(req.params.id).populate("commentList").exec(function(err, campGround){
         if (err){
             console.log(err);
         }else{
-            console.log("render show page");
             res.render("./campground/show", {campGround: campGround});
         }
     });
@@ -66,8 +64,21 @@ router.post("/index/:id/comment", isLoggedIn, function(req, res){
             console.log(err);
         }else
         {
-            campGround.commentList.push(req.body.comment);
-            campGround.save();
+            var newComment = new Comment({
+                content: req.body.content,
+                author: req.user._id,
+                authorName: req.user.username
+            });
+            console.log(newComment);
+            newComment.save(function (err, returnComment){
+                if (err){
+                    console.log(err);
+                }else{
+                    campGround.commentList.push(returnComment);
+                    campGround.save();        
+                    console.log(campGround.commentList);
+                }
+            })
             res.redirect("/index/" + req.params.id);
         }
     });

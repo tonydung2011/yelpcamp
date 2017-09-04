@@ -11,8 +11,8 @@ var campgroundSchema =  new mongoose.Schema({
     description: String,
     commentList: [
         {
-            content: String,
-            author: String
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Comment"
         }
         ]
 });

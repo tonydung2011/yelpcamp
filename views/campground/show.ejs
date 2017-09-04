@@ -12,21 +12,21 @@
       
       <!--display commment-->
       <div>
-        <% campGround.commentList.forEach(function(comment){ %>
-          <% if (comment!==null){ %>
-            <p><strong><%= comment.author %></strong> - <%= comment.content %></p>
-          <% } %>
-        <% }) %>
+        <ul>
+          <% campGround.commentList.forEach(function(comment){ %>
+            <% if (comment!==null){ %>
+              <li><strong><%=comment.authorName%></strong> - <%=comment.content%></li>
+            
+            <% } %>
+          <% }) %>
+        </ul>
       </div>
       
       <!--adding comment form-->
       <div>
       	<form action="/index/<%= campGround._id %>/comment" method="POST" class="form-inline">
           <div class="form-group">
-            <input type="text" class="form-control" name="comment[author]" placeholder="author">
-          </div>
-          <div class="form-group">
-            <input type="text" class="form-control" name="comment[content]" placeholder="content">    
+            <input type="text" class="form-control" name="content" placeholder="content">    
           </div>
           <div>
             <button type="submit" class="btn btn-default">comment</button>

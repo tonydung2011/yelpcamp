@@ -38,7 +38,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
   
   
-// reset app
+//reset app
 // var campGroundsArray = require("./model/dataGenerator.js");   
 // campGroundsArray.forEach(function(campGroundIterator){
 //     var tempCG = new Campground({
