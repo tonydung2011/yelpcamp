@@ -3,17 +3,10 @@ var express    = require("express"),
     Campground = require("../model/campground"),
     Comment    = require("../model/comments");
 
-
-function isLoggedIn(req, res, next){
-    if (req.isAuthenticated()){
-        return next();
-    }else{
-        res.redirect("/login");
-    }
-}
+var middleware = require("../middleware/index.js");
 
 // access to campGround page
-router.get("/index/", function (req, res){
+router.get("/", function (req, res){
     console.log("campround page activates");
     Campground.find({},function(err, campGroundDB){
         if (err){
@@ -25,11 +18,12 @@ router.get("/index/", function (req, res){
 });
 
 // route of post request to make a new campground
-router.post("/index/", isLoggedIn, function (req, res){
+router.post("/", middleware.isLoggedIn, function (req, res){
   var newCampGround = new Campground({
       name: req.body.name,
       image: req.body.image,
-      description: req.body.description
+      description: req.body.description,
+      author: req.user
   });
   newCampGround.save(function(err, savedCampGround){
       if (err){
@@ -42,13 +36,13 @@ router.post("/index/", isLoggedIn, function (req, res){
 });
 
 // access to page new camp ground
-router.get("/index/new", isLoggedIn ,function(req, res){
+router.get("/new", middleware.isLoggedIn ,function(req, res){
     res.render("campground/new");
 });
 
 // access to a specific campground id page
-router.get("/index/:id", function(req, res){
-    Campground.findById(req.params.id).populate("commentList").exec(function(err, campGround){
+router.get("/:id", function(req, res){
+    Campground.findById(req.params.id).populate("commentList").populate("author").exec(function(err, campGround){
         if (err){
             console.log(err);
         }else{
@@ -57,8 +51,50 @@ router.get("/index/:id", function(req, res){
     });
 });
 
+//edit route
+router.get("/:id/edit", middleware.isLoggedIn, function(req, res){
+    Campground.findById(req.params.id, function(err, foundCampground){
+        if (err){
+            console.log(err);
+        }else{
+            
+                res.render("./campground/edit", {htmlCampground: foundCampground});
+            
+        }
+    })
+})
+
+//update route
+router.put("/:id", middleware.isLoggedIn, function(req, res){
+    console.log("hit put route");
+    Campground.findById(req.params.id, function(err, foundCampground){
+        if (err){
+            console.log(err);
+        }else{
+            foundCampground.name        = req.body.updateCampground.name;
+            foundCampground.image       = req.body.updateCampground.image;
+            foundCampground.description = req.body.updateCampground.description;
+            foundCampground.save();
+        }
+        res.redirect("/index/"+req.params.id);
+    })
+})
+
+// delete route
+router.delete("/:id", function(req, res){
+    console.log("hit delete route");
+    Campground.findByIdAndRemove(req.params.id, function(err){
+        if (err){
+            console.log(err);
+        }else{
+            console.log("delete done");
+        }
+        res.redirect("/index");
+    })
+})
+
 // adding comment
-router.post("/index/:id/comment", isLoggedIn, function(req, res){
+router.post("/:id/comment", middleware.isLoggedIn, function(req, res){
     Campground.findById(req.params.id, function(err, campGround){
         if (err){
             console.log(err);

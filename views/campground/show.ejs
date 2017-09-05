@@ -7,32 +7,49 @@
         <img src="<%= campGround.image %>" class="img-rounded" alt="Cinque Terre" width=100% >
       </div>
       <div>
+        <strong><%=campGround.author.username%></strong>
+      </div>
+      <div>
         <p><%= campGround.description %></p>
       </div>
       
+      <!--display button-->
+      
+      <% if (currentUser && campGround.author._id.equals(currentUser._id)){ %>
+        <div class="inline">
+            <a class="btn btn-warning" href="/index/<%=campGround._id%>/edit">Edit</a>
+            <form action="/index/<%=campGround._id%>/?_method=DELETE" method=POST>
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>  
+        </div>
+        
+      <% } %>
+      
       <!--display commment-->
+      
       <div>
         <ul>
           <% campGround.commentList.forEach(function(comment){ %>
             <% if (comment!==null){ %>
               <li><strong><%=comment.authorName%></strong> - <%=comment.content%></li>
-            
             <% } %>
           <% }) %>
         </ul>
       </div>
       
       <!--adding comment form-->
+      <% if (currentUser) { %>
       <div>
-      	<form action="/index/<%= campGround._id %>/comment" method="POST" class="form-inline">
-          <div class="form-group">
-            <input type="text" class="form-control" name="content" placeholder="content">    
-          </div>
-          <div>
-            <button type="submit" class="btn btn-default">comment</button>
-          </div>
-        </form>  
-      </div>
+        	<form action="/index/<%= campGround._id %>/comment" method="POST" class="form-inline">
+            <div class="form-group">
+              <input type="text" class="form-control" name="content" placeholder="content">    
+            </div>
+            <div>
+              <button type="submit" class="btn btn-sml">comment</button>
+            </div>
+          </form>  
+        </div>
+      <% } %>
     </div>
 </div>
 

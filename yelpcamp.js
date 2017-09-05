@@ -5,7 +5,8 @@ var express             = require("express"),
     passport            = require("passport"),
     localStrategy       = require("passport-local"),
     session             = require("express-session"),
-    mongoose            = require("mongoose");
+    mongoose            = require("mongoose"),
+    methodOverride      = require("method-override");
     
 var Campground          = require("./model/campground.js"),
     User                = require("./model/user.js");
@@ -30,8 +31,7 @@ app.use(passport.session());
 passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
-// using body-parser
+app.use(methodOverride("_method"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // set up for views resources
@@ -63,7 +63,7 @@ app.use(function(req, res, next){
 });
 
 // using route
-app.use(campgroundRoute);
+app.use("/index", campgroundRoute);
 app.use(indexRoute);
 
 
